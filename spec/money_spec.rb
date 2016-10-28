@@ -11,8 +11,8 @@ describe Money do
 
   context "when just initialized" do
     it "has default not nil values" do
-      expect(@money.type).to be_eql 1
-      expect(@money.amount).to be_eql 2
+      expect(@money.type).to be_eql 2
+      expect(@money.amount).to be_eql 200.0
       expect(@money.values).to be_eql Money::DEFAULT_COIN_FACE_VALUES
     end
   end
@@ -81,13 +81,14 @@ describe Money do
     end
 
     context "when correct money amount provided by user and money type is pounds" do
-      it "multiplies the amount by 100 and sets @amount to the value" do
+      it "multiplies the amount by 100, sets @amount to the value and cganges type to pence" do
         allow(STDIN).to receive(:gets) { "1\n" }
         @money.set_type
         
         allow(STDIN).to receive(:gets) { "2\n" }
         @money.set_amount
         expect(@money.amount).to be_eql 200.0
+        expect(@money.type).to be_eql 2
       end
     end
 

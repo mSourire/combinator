@@ -6,7 +6,7 @@ class Money
   DEFAULT_COIN_FACE_VALUES = [ 1, 2, 5, 10, 20, 50, 100, 200 ]
 
   def initialize
-    @type, @amount, @values = 1, 2, DEFAULT_COIN_FACE_VALUES
+    @type, @amount, @values = 2, 200.0, DEFAULT_COIN_FACE_VALUES
   end
 
   def set_type
@@ -45,7 +45,10 @@ class Money
   end
 
   def process_amount
-    @amount *= 100 if @type == 1 
+    if @type == 1
+      @amount *= 100 
+      @type = 2
+    end
   end
 
   def amount_correct?
