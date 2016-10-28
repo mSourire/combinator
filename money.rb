@@ -28,7 +28,7 @@ class Money
   end
 
   def set_coin_face_values
-    puts "Enter comma-separated coin face values or 'exit'"
+    puts "Type comma-separated coin face values, press 'Enter' for '1, 2, 5, 10, 20, 50, 100, 200' or 'exit' to exit"
     process_values(get_command(STDIN.gets))
     raise ArgumentError unless values_correct?
   rescue ArgumentError
