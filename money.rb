@@ -6,35 +6,42 @@ class Money
   DEFAULT_COIN_FACE_VALUES = [ 1, 2, 5, 10, 20, 50, 100, 200 ]
 
   def initialize
-    get_type
-    get_amount
-    get_coin_face_values
+    @type, @amount, @values = 1, 2, DEFAULT_COIN_FACE_VALUES
+  end
+
+  def set_type
+    loop do
+      puts "Choose money type: enter '1' for pounds, 2 - for pence or 'exit'"
+      @type = get_command(STDIN.gets).to_i
+      break if type_correct?
+    end
+  end
+
+  def set_amount
+    puts "Enter money amount or 'exit'"
+    @amount = Float(get_command(STDIN.gets))
+    process_amount
+    raise ArgumentError unless amount_correct?
+  rescue ArgumentError
+    puts "Money amount must present a number >= 0"
+    retry
+  end
+
+  def set_coin_face_values
+    puts "Enter comma-separated coin face values or 'exit'"
+    process_values(get_command(STDIN.gets))
+    raise ArgumentError unless values_correct?
+  rescue ArgumentError
+    puts "Coin face values must present numbers > 0"
+    retry
   end
 
 
   private
 
 
-  def get_type
-    while true
-      puts "Choose money type: enter '1' for pounds, 2 - for pence or 'exit'"
-      @type = get_command(gets).to_i
-      break if type_correct?
-    end
-  end
-
   def type_correct?
     MONEY_TYPES.values.any?{ |v| v == @type }
-  end
-
-  def get_amount
-    puts "Enter money amount or 'exit'"
-    @amount = Float(get_command(gets))
-    process_amount
-    raise ArgumentError unless amount_correct?
-  rescue ArgumentError
-    puts "Money amount must present a number >= 0"
-    retry
   end
 
   def process_amount
@@ -45,22 +52,8 @@ class Money
     @amount >= 0
   end
 
-  def get_coin_face_values
-    puts "Enter comma-separated coin face values or 'exit'"
-    @values = get_command(gets)
-    process_values
-    raise ArgumentError unless values_correct?
-  rescue ArgumentError
-    puts "Coin face values must present numbers > 0"
-    retry
-  end
-
-  def process_values
-    @values = if @values == "\n"
-      DEFAULT_COIN_FACE_VALUES
-    else
-      @values.split(',').map(&:to_i)
-    end
+  def process_values input_string
+    @values = input_string.split(',').map(&:to_i) unless input_string == "\n"
   end
 
   def values_correct?
